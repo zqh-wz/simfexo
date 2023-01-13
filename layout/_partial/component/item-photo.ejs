@@ -1,0 +1,14 @@
+<div class="photo-box">
+    <div class="photo-img">
+        <a href="<%= photoInfo.url %>"
+            data-lightbox="image-<%= photoInfo.idx %>" data-title="<%= photoInfo.title %>" data-desc="<%= photoInfo.desc %>" data-param="<%= photoInfo.param %>">
+            <img class="photo"
+                src="<%= photoInfo.url %>">
+        </a>
+
+    </div>
+    <div class="photo-desc">
+        <span class="date"><%= photoInfo.date %></span>
+        <hr>
+    </div>
+</div>

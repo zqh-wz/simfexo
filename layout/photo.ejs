@@ -1,0 +1,63 @@
+<div class="content-photo">
+
+  <%- js(['js/waterfall.min.js', 'js/imgStatus.min.js', 'js/lightbox-plus-jquery.js']) %>
+
+  <h1 style="font-family: 'calligraffittiregular'">
+    Photography
+  </h1>
+
+  <div class="photo-container">
+    <%- processPhoto(page.raw) %>
+  </div>
+
+  <script>
+    waterfall('.photo-container');
+    imgStatus.watch('img', function (imgs) {
+      waterfall('.photo-container');
+    });
+    window.addEventListener('resize', function () {
+        waterfall('.photo-container');
+    });
+  </script>
+
+</div>
+
+<%- partial('_partial/component/back-top', {showBacktop: theme.backtop.category}) %>
+
+<%
+  function processPhoto(content) {
+    var photoList = [];
+
+    var abbr = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    var contents = content.split('---').splice(2);
+    contents.forEach(function(photo, i) {
+      var photoInfo = {idx: i};
+      var vals = photo.split('\n');
+      vals.forEach(function(s, i) {
+        var par_pos = s.indexOf(':');
+        var key = s.substring(0, par_pos).trim();
+        var value = s.substring(par_pos + 1).trim();
+        if (key == 'date') {
+          var value_split = value.split('.');
+          y = value_split[0];
+          m = value_split[1];
+          d = value_split[2];
+          value = abbr[m] + ' ' + d + ' ' + y;
+        }
+        photoInfo[key] = value;
+      });
+      photoList.push(photoInfo);
+    });
+
+    photoList = photoList.reverse();
+
+    var dom = '';
+
+    photoList.forEach(function (photoInfo, i) {
+      dom += partial('_partial/component/item-photo', {photoInfo: photoInfo});
+    });
+
+    return dom;
+  }
+%>
