@@ -1,0 +1,33 @@
+<div class="content content-record">
+  <%- partial('_partial/component/page-header', {location: __('location.records')}) %>
+
+  <ul class="record-list">
+    <%- processRecord(page.raw) %>
+  </ul>
+
+</div>
+
+<%- partial('_partial/component/back-top', {showBacktop: theme.backtop.record}) %>
+
+<%
+  function processRecord(content) {
+    var contents = content.split('---').splice(2);
+    var dom = '';
+    contents.forEach(function(lines, i) {
+      var vals = lines.split('\n');
+      var content = []
+      vals.forEach(function(line, i) {
+        if (line.trim()) {
+          content.push(line);
+        }
+      });
+      var recordInfo = {idx: i, title: content[0]};
+      if (content.length > 1) {
+        recordInfo['info'] = content[1];
+      }
+      dom += partial('_partial/component/item-record', {recordInfo: recordInfo});
+    });
+    return dom;
+  }
+%>
+
